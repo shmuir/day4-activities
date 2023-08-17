@@ -1,0 +1,103 @@
+---
+title: "Activities day 4: loops and functions"
+date: "17 August 2023"
+format: html
+editor: visual
+---
+
+## Task 1
+
+```{r}
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+transects <- c("Transect A", "Transect B","Transect C")
+```
+
+```{r}
+day_transect <- matrix(nrow = length(weekdays), ncol = length(transects))
+
+for (i in seq_along(transects)) {
+  for (j in seq_along(weekdays)) {
+    out <- print(paste(weekdays[j], "-", transects[i]))
+    day_transect [j,i] <- out
+  }
+}
+
+day_transect
+```
+
+## Task 2
+
+```{r}
+force <- function(mass, acceleration) {
+  paste("The resulting force is", mass * acceleration, "Newtons")
+}
+
+force(4, 7)
+```
+
+## Task 3
+
+```{r}
+fish_parms <- data.frame(sci_name = c("Chanos chanos", "Sphyraena barracuda", "Caranx ignobilis"),
+                         common_name = c("Milkfish", "Great barracuda", "Giant trevally"),
+                         a_est = c(0.0905, 0.0181, 0.0353),
+                         b_est = c(2.52, 3.27, 3.05))
+```
+
+```{r}
+fish_weight <- function(common_fish, fish_length) {
+ selected_fish <- dplyr::filter(fish_parms, common_name == common_fish)
+ print(selected_fish$a_est * (fish_length^selected_fish$b_est))
+}
+```
+
+```{r}
+fish_weight("Milkfish", 17)
+fish_weight("Great barracuda", 10)
+```
+
+```{r}
+fish_vec <- seq(from = 0, to = 100, by = 1)
+```
+
+```{r}
+milkfish_weights <- vector(mode = "numeric", length = length(fish_vec))
+
+for (i in 1:length(fish_vec)) {
+  lengths <- fish_weight("Milkfish", fish_vec[i])
+  milkfish_weights[i] <- lengths
+} 
+
+```
+
+## Task 4
+
+```{r}
+wave_heights <- seq(from = 0, to = 3, by = 0.2)
+
+wave_power <- function(wave_height, period) {
+  paste(0.5 * wave_height^2 * period, "kW/m")
+}
+
+wave_power(wave_heights, 8)
+```
+
+## Task 5
+
+```{r}
+wave_power_2 <- function(water_depth, wave_height, period) {
+  if (water_depth > 12) {
+    message("Deep water equation used")
+    paste((0.5 * wave_height^2 * period), "kW/m")
+  } else if (water_depth <= 12) {
+    message("Shallow water equation used")
+    paste((0.81 * wave_height^2 * period), "kW/m")
+  }
+}
+```
+
+```{r}
+wave_power_2(2, 4, 8)
+wave_power_2(15, 4, 8)
+```
+
